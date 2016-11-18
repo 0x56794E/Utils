@@ -57,7 +57,7 @@ public class BST
 				parent = parent.getParent();
 				++height;
 			}
-			
+			 
 			return height;
 		}
 		
@@ -103,6 +103,7 @@ public class BST
 		return -1; //Can't find
 	}
 	
+	//If same val with parent => add to left
 	public void add(int i)
 	{
 		++nodeCount;
@@ -145,7 +146,9 @@ public class BST
 		//TODO: similar to dfs but do not pop while traversing cuz need to know how many spaces needed
 		//Level n has 2^n nodes at most => need 5*2^n space		
 		//So if a tree has n levels => the root need to have 5 * 2 ^ (n-1) spaces to the left
-		//Then
+		//Suppose parent have 5 to the left
+		//Left Child = parent - 2.5
+		//Left Child = parent + 2.5
 		
 		Map<Integer, List<Node>> levelMap = new HashMap<Integer, List<Node>>();
 		dfs(new Action()
@@ -155,11 +158,14 @@ public class BST
 			@Override
 			public void doThing(Node node)
 			{
+				//Need to determine how many spaces ea node need.
 				int h = node.height();
+				
 				if (!map.containsKey(h))
 					map.put(h, new ArrayList<Node>());
 				
 				map.get(h).add(node);
+				
 			}
 			
 			private Action init(Map<Integer, List<Node>> map)
@@ -168,17 +174,30 @@ public class BST
 				return this;
 			}
 		}.init(levelMap));
-		
-		for (int i = 0; i < levelMap.size(); ++i)
+		/*
+		for (int h = 0; h < levelMap.size(); ++h)
 		{
-			if (levelMap.containsKey(i))
+			if (levelMap.containsKey(h))
 			{
-				System.out.printf("Printing level %d. Including [", i);
-				for (Node node : levelMap.get(i))
-					System.out.printf("%s, ", node);
-				System.out.println("]");
+				int padding = node.value > node.getParent().value()
+								? 2.5
+								- 2.5;
+				int space = 5 * Math.pow(2, h - 2) + padding;
+				
+				
+				//printinf
+				for (int i = 0; i < space; ++i)
+					System.out.print(" ");
+				System.out.print
+				
+				
+				
+				//End of ea level:
+				System.out.println();
+				
 			}
 		}
+		*/
 	}
 	
 	/**
@@ -245,7 +264,7 @@ public class BST
 		
 //		tree.printTree();
 		System.out.printf("Node %d has height %d\n", 9, tree.findHeight(9));
-		System.out.printf("Node %d has height %d\n", 5, tree.findHeight(5));
+		System.out.printf("Node %d has height %d\n", 0, tree.findHeight(0));
 		System.out.printf("Node %d has height %d\n", 4, tree.findHeight(4));
 		System.out.printf("Node %d has height %d\n", 6, tree.findHeight(6));
 		System.out.printf("Node %d has height %d\n", 8, tree.findHeight(8));
